@@ -94,7 +94,8 @@ create table if not exists daily_reports (
 create index if not exists idx_articles_user_board on articles(user_id, board_id);
 create index if not exists idx_articles_user_date on articles(user_id, published_at desc);
 create index if not exists idx_articles_hash on articles(user_id, hash);
-create index if not exists idx_articles_search on articles using gin(to_tsvector('chinese', title || ' ' || coalesce(summary, '')));
+-- 全文搜索索引（使用 simple 配置，支持中英文混合）
+create index if not exists idx_articles_search on articles using gin(to_tsvector('simple', title || ' ' || coalesce(summary, '')));
 
 -- RLS Policies
 
